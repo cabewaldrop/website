@@ -1,0 +1,3 @@
+deploy:
+  go test ./...
+  flyctl deploy
