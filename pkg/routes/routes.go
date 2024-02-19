@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/cabewaldrop/website/pkg/recipes"
@@ -16,6 +17,25 @@ type IndexParams struct {
 	Date string
 }
 
+type RecipeLink struct {
+	Title string
+	Link  string
+}
+
+type RecipeIndexParams struct {
+	Links []RecipeLink
+	Date  string
+}
+
+type RecipeDetailParams struct {
+	Recipe recipes.Recipe
+	Date   string
+}
+
+type BlogIndexParams struct {
+	Date string
+}
+
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
 	e.GET("/", func(c echo.Context) error {
@@ -26,18 +46,37 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 		return c.JSON(200, HealthCheckResponse{Status: "ok"})
 	})
 
-	e.GET("/recipe/:slug", func(c echo.Context) error {
+	e.GET("/recipes", func(c echo.Context) error {
+		recipes := recipes.GetRecipes()
+		links := []RecipeLink{}
+		for _, recipe := range recipes {
+			links = append(links,
+				RecipeLink{Title: recipe.Title, Link: fmt.Sprintf("/recipes/%s", recipe.Slug)})
+		}
+
+		return c.Render(200, "recipe-index", RecipeIndexParams{Date: now, Links: links})
+	})
+
+	e.GET("/recipes/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
 		recipe, err := recipes.GetRecipe(slug)
 		if err != nil {
-			//TODO
+			// TODO: Add 404 handling
 		}
 
 		log.Info().Msgf("Recipe is: %v", recipe)
-		return c.Render(200, "recipe-detail", recipe)
+		return c.Render(200, "recipe-detail", RecipeDetailParams{Date: now, Recipe: recipe})
 	})
 
-	e.Static("/images", "images")
+	e.GET("/blog", func(c echo.Context) error {
+		return c.Render(200, "blog-index", BlogIndexParams{Date: now})
+	})
+
+	e.GET("/api", func(c echo.Context) error {
+		return c.Render(200, "federated-autonomy", nil)
+	})
+
+	e.Static("/static", "static")
 
 	return e
 }

@@ -1,4 +1,9 @@
-app = 'cabewebsite'
+# fly.toml app configuration file generated for cabewebsite-dev on 2024-02-19T08:37:25-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'cabewebsite-dev'
 primary_region = 'ord'
 
 [build]

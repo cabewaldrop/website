@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rs/zerolog/log"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -32,7 +31,6 @@ func LoadRecipes(recipeDir string) error {
 }
 
 func LoadRecipe(path string, file fs.DirEntry, err error) error {
-	log.Info().Msgf("Processing %s", path)
 	if err != nil {
 		return err
 	}
@@ -62,4 +60,8 @@ func GetRecipe(slug string) (Recipe, error) {
 	}
 
 	return recipes[slug], nil
+}
+
+func GetRecipes() map[string]Recipe {
+	return recipes
 }

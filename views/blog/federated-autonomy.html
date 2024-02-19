@@ -1,0 +1,74 @@
+{{ block "federated-autonomy" .}} {{template "head" .}}
+<article class="prose mx-6 lg:prose-lg">
+  <h1>API management with federated autonomy using Tyk Operator</h1>
+  <p>
+    I am going to tell you a story. Yes, this is a technical blog post, but the
+    origin story is often the most important thing to know when deciding whether
+    or not to use technology. What drove the team to use a given piece of tech?
+    What problem does it solve? Don’t worry; plenty of technical details will
+    come so you can lean back and get comfortable.
+  </p>
+  <p>Let the story begin.</p>
+  <p>
+    The year was 2021, and the pandemic was in full swing. Many of us hadn’t
+    left our homes in months…we might still have been washing our groceries down
+    with Windex. Against this backdrop, we started a major project at
+    Realtor.com to overhaul our API layer and transform how our backend and
+    frontend teams interact.
+  </p>
+  <h2>Lacking a shared infrastructure</h2>
+  <p>
+    You see, we had gone all in on microservices and were paying the price. If
+    microservices are the proverbial hammer, not every part of your tech stack
+    is a nail. Some pieces of your platform can and should be provided as shared
+    components across teams. Most importantly, for our purposes in this article,
+    it is essential to provide shared edge and API layer infrastructure.
+  </p>
+
+  <p>
+    We were utterly lacking this shared infrastructure, and each backend team
+    was solving the problem of providing APIs to client teams differently. Teams
+    shared some backend-for-frontend solutions but needed more consistency
+    across groups.
+  </p>
+
+  <p>
+    This led to a proliferation of solutions for API management, including
+    several duplicate implementations for rate limiting, token validation, and
+    IP block/allow lists.
+  </p>
+
+  <p>
+    Additionally, there were many ways of routing traffic to the backends
+    including API Gateways, CloudFront distributions, and ALBs.
+  </p>
+  <h2>Complex issues holding us back</h2>
+  <p>
+    With an increased surface area of APIs to manage, our teams struggled with
+    various issues:
+  </p>
+
+  <ul>
+    <li>The need to deploy changes in multiple places.</li>
+    <li>
+      Duplicated work as each entry point needed its own set of edge layer
+      tools.
+    </li>
+    <li>More surface area to defend against attack.</li>
+  </ul>
+
+  <p>
+    This sprawl of API endpoints was painful for our client teams to interact
+    with – causing a lot of additional business logic to be added to our client
+    code base in the form of sawtooth if statements.
+  </p>
+  <p>
+    We knew all this complexity was holding us back, but where to start? We had
+    several problems to address. Consolidating the syntax and semantics of our
+    APIs behind GraphQL is a related but separate story for another time. For
+    now, we will focus on the issue of network infrastructure sprawl and the
+    lack of consistent, supported paths for edge layer functionality like bot
+    detection, rate-limiting, header injection, and caching.
+  </p>
+</article>
+{{ end }}
