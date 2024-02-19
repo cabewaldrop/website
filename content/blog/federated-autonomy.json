@@ -1,6 +1,7 @@
-{{ block "federated-autonomy" .}} {{template "head" .}}
-<article class="prose mx-6 lg:prose-lg">
-  <h1>API management with federated autonomy using Tyk Operator</h1>
+{
+  "Title": "API management with federated autonomy using Tyk Operator",
+  "Slug": "federated-autonomy",
+  "Content": "<h1>API management with federated autonomy using Tyk Operator</h1>
   <p>
     I am going to tell you a story. Yes, this is a technical blog post, but the
     origin story is often the most important thing to know when deciding whether
@@ -70,5 +71,5 @@
     lack of consistent, supported paths for edge layer functionality like bot
     detection, rate-limiting, header injection, and caching.
   </p>
-</article>
-{{ end }}
+</article>"
+}

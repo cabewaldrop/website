@@ -1,4 +1,4 @@
-package recipes
+package content
 
 import (
 	"encoding/json"

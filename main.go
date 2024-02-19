@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/cabewaldrop/website/pkg/recipes"
+	"github.com/cabewaldrop/website/pkg/content"
 	"github.com/cabewaldrop/website/pkg/routes"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -19,6 +19,7 @@ import (
 var views embed.FS
 
 const recipeDir = "content/recipes"
+const blogDir = "content/blog"
 
 type Templates struct {
 	templates *template.Template
@@ -30,7 +31,7 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Co
 
 func NewTemplates() *Templates {
 	return &Templates{
-		templates: template.Must(template.ParseFS(views, "views/*.html", "views/blog/*.html")),
+		templates: template.Must(template.ParseFS(views, "views/*.html")),
 	}
 }
 
@@ -64,10 +65,15 @@ func handleError(err error, c echo.Context) {
 }
 
 func main() {
-	err := recipes.LoadRecipes(recipeDir)
+	err := content.LoadRecipes(recipeDir)
 	if err != nil {
 		log.Fatal().Msgf("Unable to load the recipes. Check yoself before you wreck yoself: %v", err)
 	}
+
+	// err = content.LoadPosts(blogDir)
+	// if err != nil {
+	// 	log.Fatal().Msgf("Unable to load the blog posts. Check yoself before you wreck yoself: %v", err)
+	// }
 
 	e := echo.New()
 	logRenderedTemplates()
@@ -76,6 +82,7 @@ func main() {
 	e.HTTPErrorHandler = handleError
 
 	e.Use(middleware.Logger())
+	e.Use(middleware.Gzip())
 
 	routes.RegisterRoutes(e)
 	e.Logger.Fatal(e.Start(":8080"))

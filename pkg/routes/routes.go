@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cabewaldrop/website/pkg/recipes"
+	"github.com/cabewaldrop/website/pkg/content"
 	"github.com/labstack/echo/v4"
-	"github.com/rs/zerolog/log"
 )
 
 type HealthCheckResponse struct {
@@ -28,8 +27,13 @@ type RecipeIndexParams struct {
 }
 
 type RecipeDetailParams struct {
-	Recipe recipes.Recipe
+	Recipe content.Recipe
 	Date   string
+}
+
+type PostDetailParams struct {
+	Post content.Post
+	Date string
 }
 
 type BlogIndexParams struct {
@@ -47,7 +51,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	})
 
 	e.GET("/recipes", func(c echo.Context) error {
-		recipes := recipes.GetRecipes()
+		recipes := content.GetRecipes()
 		links := []RecipeLink{}
 		for _, recipe := range recipes {
 			links = append(links,
@@ -59,17 +63,28 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 
 	e.GET("/recipes/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
-		recipe, err := recipes.GetRecipe(slug)
+		recipe, err := content.GetRecipe(slug)
 		if err != nil {
-			// TODO: Add 404 handling
+			return &echo.HTTPError{
+				Code:    404,
+				Message: "Could not find recipe",
+			}
 		}
 
-		log.Info().Msgf("Recipe is: %v", recipe)
 		return c.Render(200, "recipe-detail", RecipeDetailParams{Date: now, Recipe: recipe})
 	})
 
-	e.GET("/blog", func(c echo.Context) error {
-		return c.Render(200, "blog-index", BlogIndexParams{Date: now})
+	e.GET("/blog/:slug", func(c echo.Context) error {
+		slug := c.Param("slug")
+		post, err := content.GetPost(slug)
+		if err != nil {
+			return &echo.HTTPError{
+				Code:    404,
+				Message: "Could not find blog post",
+			}
+		}
+
+		return c.Render(200, "post", PostDetailParams{Date: now, Post: post})
 	})
 
 	e.GET("/api", func(c echo.Context) error {
