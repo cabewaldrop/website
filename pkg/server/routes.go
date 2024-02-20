@@ -1,4 +1,4 @@
-package routes
+package server
 
 import (
 	"fmt"
@@ -43,9 +43,12 @@ type BlogIndexParams struct {
 
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
+
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(200, "index", IndexParams{Date: now})
 	})
+
+	e.File("/favicon.ico", "static/favicon.ico")
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSON(200, HealthCheckResponse{Status: "ok"})

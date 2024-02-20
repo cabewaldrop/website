@@ -4,10 +4,12 @@ deploy: test css
 css:
   npx tailwindcss -i input.css -o static/output.css
 
-test:
+test: up
   go test ./...
+  docker-compose down
 
 up:
+  docker-compose build
   docker-compose up -d
 
 down:

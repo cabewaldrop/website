@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 
 	"gopkg.in/yaml.v2"
-
-	"github.com/rs/zerolog/log"
 )
 
 type Post struct {
@@ -49,7 +47,6 @@ func LoadPost(path string, file fs.DirEntry, err error) error {
 			return err
 		}
 
-		log.Info().Msgf("The post object is: %v", post)
 		posts[post.Slug] = post
 	}
 

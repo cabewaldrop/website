@@ -24,6 +24,5 @@ COPY --from=build /app/cabewaldrop .
 COPY --from=build /app/content ./content/
 COPY --from=build /app/static ./static/
 COPY --from=css /app/output.css ./static/css
-EXPOSE 8080/tcp
 
 ENTRYPOINT ["/app/cabewaldrop"]

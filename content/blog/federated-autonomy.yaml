@@ -98,7 +98,7 @@
     You know her…the Tykling!
   </p>
   <p>
-    <img src="../static/tyk-front.webp" width="220" height="320" class="w-full margin-auto"/>
+    <img src="../static/tyk-front.webp" width="220" height="320"/>
   </p>
   <p>
     What in the world…?!? I uttered under my breath as I stared at a bare-bottomed alien creature.
@@ -180,6 +180,38 @@
   <p>
     Anyhow, I promised I’d show you an example of an API definition, so let’s get to it:
   </p>
+  <pre><code class="language-yaml">
+  apiVersion: tyk.tyk.io/v1alpha1
+  kind: ApiDefinition
+  metadata:
+    name: user-delete
+  spec:
+    active: true
+    name: user-delete
+    protocol: http
+    domain: http://my-domain.com
+    proxy:
+      listen_path: /api/v1/users/delete
+      strip_listen_path: true
+      target_url: https://my-upstream-service.com/users/delete
+    jwt_policy_field_name: pol
+
+    # The id for the policy to apply for all requests to this endpoint
+    jwt_default_policies: ["my-policy"]
+
+    # jwt_source contains the base64 encoded url for the jwks endpoint.
+    jwt_source: >-
+      "my-jwks-endpoint-b64-encoded"
+    jwt_signing_method: rsa
+
+    # jwt claim containing the consumer id
+    jwt_identity_base_field: sub
+    active: true
+    auth:
+      auth_header_name: Authorization
+
+    enable_jwt: true
+  </code></pre>
   <p>
     In the above definition, you can see that we are deploying a route for /api/v1/users/delete.
   </p>

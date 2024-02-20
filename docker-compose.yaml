@@ -3,4 +3,6 @@ services:
   website:
     build: .
     ports:
-      - "8080:8080"
+      - "8088:8088"
+    environment:
+      - PORT=8088
