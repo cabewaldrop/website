@@ -1,8 +1,11 @@
+deploy-stage: test css
+  flyctl deploy -c fly-dev.toml
+
 deploy: test css
   flyctl deploy
 
 css:
-  npx tailwindcss -i input.css -o static/output.css
+  npx tailwindcss -i input.css -o static/output.css --minify
 
 test: up
   go test ./...

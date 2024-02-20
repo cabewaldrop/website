@@ -13,7 +13,8 @@ FROM node:18 AS css
 WORKDIR /app
 
 COPY . .
-RUN npm install && npx tailwindcss -i input.css -o output.css
+RUN npm install && \
+  npx tailwindcss -i input.css -o output.css --minify
 
 
 FROM alpine:edge
@@ -23,6 +24,6 @@ WORKDIR /app
 COPY --from=build /app/cabewaldrop .
 COPY --from=build /app/content ./content/
 COPY --from=build /app/static ./static/
-COPY --from=css /app/output.css ./static/css
+COPY --from=css /app/output.css ./static/output.css
 
 ENTRYPOINT ["/app/cabewaldrop"]
