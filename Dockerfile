@@ -16,7 +16,6 @@ COPY . .
 RUN npm install && \
   npx tailwindcss -i input.css -o output.css --minify
 
-
 FROM alpine:edge
 
 WORKDIR /app

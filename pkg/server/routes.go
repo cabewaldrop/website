@@ -12,8 +12,13 @@ type HealthCheckResponse struct {
 	Status string
 }
 
+type Metadata struct {
+	Date  string
+	Title string
+}
+
 type IndexParams struct {
-	Date string
+	Meta Metadata
 }
 
 type ContentLink struct {
@@ -22,22 +27,22 @@ type ContentLink struct {
 }
 
 type RecipeIndexParams struct {
+	Meta  Metadata
 	Links []ContentLink
-	Date  string
 }
 
 type RecipeDetailParams struct {
+	Meta   Metadata
 	Recipe content.Recipe
-	Date   string
 }
 
 type PostDetailParams struct {
+	Meta Metadata
 	Post content.Post
-	Date string
 }
 
 type BlogIndexParams struct {
-	Date  string
+	Meta  Metadata
 	Links []ContentLink
 }
 
@@ -45,7 +50,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
 
 	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index", IndexParams{Date: now})
+		return c.Render(200, "index", IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
 	})
 
 	e.File("/favicon.ico", "static/favicon.ico")
@@ -62,7 +67,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 				ContentLink{Title: recipe.Title, Link: fmt.Sprintf("/recipes/%s", recipe.Slug)})
 		}
 
-		return c.Render(200, "recipe-index", RecipeIndexParams{Date: now, Links: links})
+		return c.Render(200, "recipe-index", RecipeIndexParams{Meta: Metadata{Date: now, Title: "Recipes"}, Links: links})
 	})
 
 	e.GET("/recipes/:slug", func(c echo.Context) error {
@@ -75,7 +80,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "recipe-detail", RecipeDetailParams{Date: now, Recipe: recipe})
+		return c.Render(200, "recipe-detail", RecipeDetailParams{Meta: Metadata{Date: now, Title: slug}, Recipe: recipe})
 	})
 
 	e.GET("/blog", func(c echo.Context) error {
@@ -86,8 +91,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 				ContentLink{Title: post.Title, Link: fmt.Sprintf("/blog/%s", post.Slug)})
 		}
 
-		return c.Render(200, "blog-index", BlogIndexParams{Date: now, Links: links})
+		return c.Render(200, "blog-index", BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Links: links})
 	})
+
 	e.GET("/blog/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
 		post, err := content.GetPost(slug)
@@ -98,9 +104,11 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "post", PostDetailParams{Date: now, Post: post})
+		return c.Render(200, "post", PostDetailParams{Meta: Metadata{Date: now, Title: slug}, Post: post})
 	})
 
+	// Used in dev, but actually intercepted and served by CDN in production
+	// See [[statics]] in fly.toml
 	e.Static("/static", "static")
 
 	return e

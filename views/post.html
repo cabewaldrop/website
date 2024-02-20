@@ -1,6 +1,10 @@
-{{ block "post" .}} {{template "head" .}} {{ template "navbar" .}}
-<script>
-  hljs.highlightAll();
-</script>
-<article class="prose lg:prose-xl ml-8">{{ .Post.Content }}</article>
+{{ block "post" .}}
+<!doctype html>
+<html lang="en">
+  {{template "head" .}} {{ template "navbar" .}}
+  <script>
+    hljs.highlightAll();
+  </script>
+  <article class="prose lg:prose-xl ml-8">{{ .Post.Content }}</article>
+</html>
 {{ end }}

@@ -19,6 +19,10 @@ primary_region = 'ord'
 [env]
   PORT = 8080
 
+[[statics]]
+  guest_path = "/app/static"
+  url_prefix = "/static"
+
 [[vm]]
   cpu_kind = 'shared'
   cpus = 1
