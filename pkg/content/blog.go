@@ -1,21 +1,22 @@
 package content
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-
+	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v2"
 
 	"github.com/rs/zerolog/log"
 )
 
 type Post struct {
-	Title   string
-	Content string
-	Slug    string
+	Title   string        `yaml:"title"`
+	Content template.HTML `yaml:"content"`
+	Slug    string        `yaml:"slug"`
 }
 
 var posts = map[string]Post{}
@@ -35,8 +36,6 @@ func LoadPost(path string, file fs.DirEntry, err error) error {
 		return err
 	}
 
-	log.Info().Msgf("Processing: %s", path)
-
 	if !file.IsDir() {
 		bytes, _ := os.ReadFile(path)
 		if err != nil {
@@ -45,14 +44,15 @@ func LoadPost(path string, file fs.DirEntry, err error) error {
 
 		var post Post
 
-		err := json.Unmarshal(bytes, &post)
+		err := yaml.Unmarshal(bytes, &post)
 		if err != nil {
 			return err
 		}
 
+		log.Info().Msgf("The post object is: %v", post)
 		posts[post.Slug] = post
-
 	}
+
 	return nil
 }
 

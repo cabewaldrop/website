@@ -1,1 +1,3 @@
-{{ block "post" .}} {{template "head" .}} {{ .Content }} {{ end }}
+{{ block "post" .}} {{template "head" .}} {{ template "navbar" .}}
+<article class="prose lg:prose-xl ml-8">{{ .Post.Content }}</article>
+{{ end }}

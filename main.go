@@ -70,10 +70,10 @@ func main() {
 		log.Fatal().Msgf("Unable to load the recipes. Check yoself before you wreck yoself: %v", err)
 	}
 
-	// err = content.LoadPosts(blogDir)
-	// if err != nil {
-	// 	log.Fatal().Msgf("Unable to load the blog posts. Check yoself before you wreck yoself: %v", err)
-	// }
+	err = content.LoadPosts(blogDir)
+	if err != nil {
+		log.Fatal().Msgf("Unable to load the blog posts. Check yoself before you wreck yoself: %v", err)
+	}
 
 	e := echo.New()
 	logRenderedTemplates()

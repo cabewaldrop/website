@@ -16,13 +16,13 @@ type IndexParams struct {
 	Date string
 }
 
-type RecipeLink struct {
+type ContentLink struct {
 	Title string
 	Link  string
 }
 
 type RecipeIndexParams struct {
-	Links []RecipeLink
+	Links []ContentLink
 	Date  string
 }
 
@@ -37,7 +37,8 @@ type PostDetailParams struct {
 }
 
 type BlogIndexParams struct {
-	Date string
+	Date  string
+	Links []ContentLink
 }
 
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
@@ -52,10 +53,10 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 
 	e.GET("/recipes", func(c echo.Context) error {
 		recipes := content.GetRecipes()
-		links := []RecipeLink{}
+		links := []ContentLink{}
 		for _, recipe := range recipes {
 			links = append(links,
-				RecipeLink{Title: recipe.Title, Link: fmt.Sprintf("/recipes/%s", recipe.Slug)})
+				ContentLink{Title: recipe.Title, Link: fmt.Sprintf("/recipes/%s", recipe.Slug)})
 		}
 
 		return c.Render(200, "recipe-index", RecipeIndexParams{Date: now, Links: links})
@@ -74,6 +75,16 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 		return c.Render(200, "recipe-detail", RecipeDetailParams{Date: now, Recipe: recipe})
 	})
 
+	e.GET("/blog", func(c echo.Context) error {
+		posts := content.GetPosts()
+		links := []ContentLink{}
+		for _, post := range posts {
+			links = append(links,
+				ContentLink{Title: post.Title, Link: fmt.Sprintf("/blog/%s", post.Slug)})
+		}
+
+		return c.Render(200, "blog-index", BlogIndexParams{Date: now, Links: links})
+	})
 	e.GET("/blog/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
 		post, err := content.GetPost(slug)
@@ -85,10 +96,6 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 		}
 
 		return c.Render(200, "post", PostDetailParams{Date: now, Post: post})
-	})
-
-	e.GET("/api", func(c echo.Context) error {
-		return c.Render(200, "federated-autonomy", nil)
 	})
 
 	e.Static("/static", "static")
