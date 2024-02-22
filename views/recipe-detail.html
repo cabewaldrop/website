@@ -1,8 +1,10 @@
 {{ block "recipe-detail" .}} {{template "head" .}} {{template "navbar" .}}
 <div class="mt-4 grid grid-cols-1 justify-items-center">
   <img
-    class="h-64 w-64 mb-3 rounded-full shadow-lg"
+    class="object-cover mb-3 rounded-full shadow-lg"
     ,
+    height="200"
+    width="200"
     src="{{ .Recipe.Image }}"
     alt="{{ .Recipe.Title }}"
   />
