@@ -18,6 +18,7 @@ primary_region = 'ord'
 
 [env]
   PORT = 8080
+  BASE_URL = "cabewebsite-dev.fly.dev"
 
 [[statics]]
   guest_path = "/app/static"

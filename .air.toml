@@ -11,7 +11,7 @@ tmp_dir = "tmp"
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
   follow_symlink = false
-  full_bin = "PORT=8080 ./tmp/main"
+  full_bin = "PORT=8080 BASE_URL=localhost ./tmp/main"
   include_dir = ["cmd", "views", "pkg"]
   include_ext = ["go", "html"]
   include_file = ["main.go"]

@@ -2,11 +2,14 @@ package server
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/cabewaldrop/website/pkg/content"
 	"github.com/labstack/echo/v4"
 )
+
+var baseURL = os.Getenv("BASE_URL")
 
 type HealthCheckResponse struct {
 	Status string
@@ -95,7 +98,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 					OpenGraph: OpenGraph{
 						Title:       recipe.Title,
 						Description: recipe.Title,
-						Image:       recipe.Image,
+						Image:       fmt.Sprintf("%s%s", baseURL, recipe.Image),
 					},
 				},
 				Recipe: recipe,
