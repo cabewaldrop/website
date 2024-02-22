@@ -36,7 +36,7 @@ type ContentLink struct {
 	Link  string
 }
 
-type RecipeCard struct {
+type Card struct {
 	Title       string
 	URL         string
 	Description string
@@ -45,7 +45,7 @@ type RecipeCard struct {
 
 type RecipeIndexParams struct {
 	Meta  Metadata
-	Cards []RecipeCard
+	Cards []Card
 }
 
 type RecipeDetailParams struct {
@@ -60,7 +60,7 @@ type PostDetailParams struct {
 
 type BlogIndexParams struct {
 	Meta  Metadata
-	Links []ContentLink
+	Cards []Card
 }
 
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
@@ -78,11 +78,11 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 
 	e.GET("/recipes", func(c echo.Context) error {
 		recipes := content.GetRecipes()
-		cards := []RecipeCard{}
+		cards := []Card{}
 		for _, recipe := range recipes {
 			cards = append(
 				cards,
-				RecipeCard{
+				Card{
 					Title:       recipe.Title,
 					Description: recipe.Description,
 					URL:         fmt.Sprintf("/recipes/%s", recipe.Slug),
@@ -127,13 +127,19 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 
 	e.GET("/blog", func(c echo.Context) error {
 		posts := content.GetPosts()
-		links := []ContentLink{}
+		cards := []Card{}
 		for _, post := range posts {
-			links = append(links,
-				ContentLink{Title: post.Title, Link: fmt.Sprintf("/blog/%s", post.Slug)})
+			cards = append(cards,
+				Card{
+					Title:       post.Title,
+					URL:         fmt.Sprintf("/blog/%s", post.Slug),
+					Image:       post.Image,
+					Description: post.Description,
+				},
+			)
 		}
 
-		return c.Render(200, "blog-index", BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Links: links})
+		return c.Render(200, "blog-index", BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Cards: cards})
 	})
 
 	e.GET("/blog/:slug", func(c echo.Context) error {
