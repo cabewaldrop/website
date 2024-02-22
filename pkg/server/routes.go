@@ -127,7 +127,16 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "post", PostDetailParams{Meta: Metadata{Date: now, Title: slug}, Post: post})
+		return c.Render(200, "post", PostDetailParams{
+			Meta: Metadata{
+				Date:  now,
+				Title: slug,
+				OpenGraph: OpenGraph{
+					Title:       post.Title,
+					Description: post.Description,
+					Image:       fmt.Sprintf("%s%s", baseURL, post.Image),
+				},
+			}, Post: post})
 	})
 
 	// Used in dev, but actually intercepted and served by CDN in production

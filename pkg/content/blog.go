@@ -12,9 +12,11 @@ import (
 )
 
 type Post struct {
-	Title   string        `yaml:"title"`
-	Content template.HTML `yaml:"content"`
-	Slug    string        `yaml:"slug"`
+	Title       string        `yaml:"title"`
+	Content     template.HTML `yaml:"content"`
+	Slug        string        `yaml:"slug"`
+	Description string        `yaml:"description"`
+	Image       string        `yaml:"image"`
 }
 
 var posts = map[string]Post{}

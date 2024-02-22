@@ -1,6 +1,8 @@
 ---
 "title": "API Management With Federated Autonomy Using Tyk Operator"
 "slug": "federated-autonomy"
+"image": /static/tyk-infra.webp
+"description": "Building a self serve API management platform using Tyk Operator"
 "content": |
   <h1 class="text-center">API Management With Federated Autonomy Using Tyk Operator</h1>
   <p>
@@ -98,14 +100,14 @@
     You know her…the Tykling!
   </p>
   <p>
-    <img src="../static/tyk-front.webp" width="220" height="320"/>
+    <img src="../static/tyk-front.webp" alt="The tykling front view" width="220" height="320" loading="lazy"/>
   </p>
   <p>
     What in the world…?!? I uttered under my breath as I stared at a bare-bottomed alien creature.
     My colleague, Brian, had sent me a link to the Tyk website, and I was greeted by their cherubic
     mascot with an equally cherubic bare butt.
   </p>
-  <img src="../static/tyk-back.webp" width="220" height="320"/>
+  <img src="../static/tyk-back.webp" alt="The tykling back view" width="220" height="320" loading="lazy"/>
   <p>
     My surprise gave way to genuine interest as I read more about Tyk.GraphQL embedded in the gateway?
     Sweet! Rate limiting, caching, and API sharding? Very Nice! Oh, what is this? Anative Kubernetes
@@ -142,7 +144,7 @@
     Let’s look at a high-level diagram detailing the flow of a request, and then we can dive into an example
     of what one of these API definition resources looks like.
   </p>
-  <img src="../static/tyk-infra.webp" width=900 height=450 />
+  <img src="../static/tyk-infra.webp" alt="Infrastructure diagram" width=900 height=450 loading="lazy"/>
   <p>
     When a client requests one of our APIs, it is first routed to a CloudFront point of presence closest to
     them. This is where we apply our AWS WAF and its associated firewall rules and integrate them with our
@@ -160,7 +162,7 @@
     gateway know where to route any individual request? This is where Tyk Operator and the API definitions
     come into play. Take a look at the following diagram:
   </p>
-  <img src="../static/tyk-operator.webp" height=400 width=550 />
+  <img src="../static/tyk-operator.webp" alt="Tyk operator reconciliation flow diagram" height=400 width=550 loading="lazy"/>
   <p>
     A developer defines a Tyk API definition and then deploys it to the cluster. The Tyk Operator, which is
     subscribed to cluster events involving API definitions, sees that a new APIDefinition has been added to
