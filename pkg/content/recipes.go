@@ -1,9 +1,9 @@
 package content
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"gopkg.in/yaml.v2"
 
 	"io/fs"
 	"os"
@@ -11,11 +11,11 @@ import (
 )
 
 type Recipe struct {
-	Title       string
-	Image       string
-	Ingredients []string
-	Steps       []string
-	Slug        string
+	Title       string   `yaml:"title"`
+	Image       string   `yaml:"image"`
+	Ingredients []string `yaml:"ingredients"`
+	Steps       []string `yaml:"steps"`
+	Slug        string   `yaml:"slug"`
 }
 
 var recipes = map[string]Recipe{}
@@ -43,7 +43,7 @@ func LoadRecipe(path string, file fs.DirEntry, err error) error {
 
 		var recipe Recipe
 
-		err := json.Unmarshal(bytes, &recipe)
+		err := yaml.Unmarshal(bytes, &recipe)
 		if err != nil {
 			return err
 		}

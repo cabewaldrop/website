@@ -1,7 +1,7 @@
-{
-  "Title": "Coca-Cola Carnitas",
-  "Image": "/static/carnitas.webp",
-  "Ingredients": [
+---
+title: "Coca-Cola Carnitas"
+image: "/static/carnitas.webp"
+ingredients: [
     "5 tablespoons Olive Oil",
     "1 teaspoon Salt",
     "1 teaspoon Garlic Powder",
@@ -13,8 +13,8 @@
     "20 ounces Cola, real sugar version or Mexican preferred...NOT diet",
     "1/2 cup Orange Juice freshly squeezed",
     "2 tablespoons lime juice"
-  ],
-  "Steps": [
+  ]
+steps: [
     "Place 2 tablespoons of olive oil in large skillet and heat on medium",
     "Place all seasoning mix into small bowl and mix together",
     "Rub seasoning mix into all sides of pork roast then sear on all sides in skillet",
@@ -26,6 +26,5 @@
     "Add the pork roast pieces and let them sizzle until there are crispy bits around the edges",
     "Once crispy, start adding remaining juices from the crock pot, about 1 cup at a time. The meat will soak up the juices quickly but you want to have enough so that when you heat the juices some of it will evaporate leaving a syrup from the cola.",
     "Continue heating until some syrup has formed. Continue until you reach the desired, tender, juicy carnitas."
-  ],
-  "Slug": "coca-cola-carnitas"
-}
+  ]
+slug: "coca-cola-carnitas"
