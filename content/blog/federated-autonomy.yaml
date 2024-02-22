@@ -231,8 +231,3 @@
     or additional load balancers. No need to write custom middle-tier components. Just write a
     small yaml file, and you are all set.
   </p>
-  <p>
-    As you can tell, we are excited about Tyk, and there is a lot more we’d like to share. Stay
-    tuned to this series for the following articles:
-  </p>
-
