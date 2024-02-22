@@ -1,8 +1,2 @@
 {{block "recipe-index" .}} {{template "head" .}} {{template "navbar" .}} {{range
-.Links}}
-<ul class="list-disc list-inside px-4 mt-4 hover:text-gray-500">
-  <li>
-    <a href="{{.Link}}">{{.Title}}</a>
-  </li>
-</ul>
-{{end}} {{template "footer" .}}{{end}}
+.Cards}} {{ template "recipe-card" .}} {{ end }} {{template "footer" .}}{{end}}

@@ -13,6 +13,7 @@ import (
 type Recipe struct {
 	Title       string   `yaml:"title"`
 	Image       string   `yaml:"image"`
+	Description string   `yaml:"description"`
 	Ingredients []string `yaml:"ingredients"`
 	Steps       []string `yaml:"steps"`
 	Slug        string   `yaml:"slug"`

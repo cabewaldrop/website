@@ -36,9 +36,16 @@ type ContentLink struct {
 	Link  string
 }
 
+type RecipeCard struct {
+	Title       string
+	URL         string
+	Description string
+	Image       string
+}
+
 type RecipeIndexParams struct {
 	Meta  Metadata
-	Links []ContentLink
+	Cards []RecipeCard
 }
 
 type RecipeDetailParams struct {
@@ -71,13 +78,25 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 
 	e.GET("/recipes", func(c echo.Context) error {
 		recipes := content.GetRecipes()
-		links := []ContentLink{}
+		cards := []RecipeCard{}
 		for _, recipe := range recipes {
-			links = append(links,
-				ContentLink{Title: recipe.Title, Link: fmt.Sprintf("/recipes/%s", recipe.Slug)})
+			cards = append(
+				cards,
+				RecipeCard{
+					Title:       recipe.Title,
+					Description: recipe.Description,
+					URL:         fmt.Sprintf("/recipes/%s", recipe.Slug),
+					Image:       recipe.Image,
+				},
+			)
 		}
 
-		return c.Render(200, "recipe-index", RecipeIndexParams{Meta: Metadata{Date: now, Title: "Recipes"}, Links: links})
+		return c.Render(200, "recipe-index",
+			RecipeIndexParams{
+				Meta:  Metadata{Date: now, Title: "Recipes"},
+				Cards: cards,
+			},
+		)
 	})
 
 	e.GET("/recipes/:slug", func(c echo.Context) error {
@@ -97,7 +116,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 					Title: slug,
 					OpenGraph: OpenGraph{
 						Title:       recipe.Title,
-						Description: recipe.Title,
+						Description: recipe.Description,
 						Image:       fmt.Sprintf("%s%s", baseURL, recipe.Image),
 					},
 				},
