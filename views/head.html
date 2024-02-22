@@ -7,6 +7,11 @@
     name="description"
     content="The online home for Cabe Waldrop. Checkout my blog and favorite recipes"
   />
+  {{ if .Meta.OpenGraph }}
+  <meta property="og:title" content="{{ .Meta.OpenGraph.Title }}" />
+  <meta property="og:description" content="{{ .Meta.OpenGraph.Description }}" />
+  <meta property="og:image" content="{{ .Meta.OpenGraph.Image }}" />
+  {{ end }}
   <script src="https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>

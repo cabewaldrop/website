@@ -12,9 +12,16 @@ type HealthCheckResponse struct {
 	Status string
 }
 
+type OpenGraph struct {
+	Title       string
+	Description string
+	Image       string
+}
+
 type Metadata struct {
-	Date  string
-	Title string
+	Date      string
+	Title     string
+	OpenGraph OpenGraph
 }
 
 type IndexParams struct {
@@ -80,7 +87,20 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "recipe-detail", RecipeDetailParams{Meta: Metadata{Date: now, Title: slug}, Recipe: recipe})
+		return c.Render(200, "recipe-detail",
+			RecipeDetailParams{
+				Meta: Metadata{
+					Date:  now,
+					Title: slug,
+					OpenGraph: OpenGraph{
+						Title:       recipe.Title,
+						Description: recipe.Title,
+						Image:       recipe.Image,
+					},
+				},
+				Recipe: recipe,
+			},
+		)
 	})
 
 	e.GET("/blog", func(c echo.Context) error {
