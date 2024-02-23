@@ -2,33 +2,28 @@
 <!doctype html>
 <html lang="en">
   {{ template "head" .}}
-  <body
-    hx-boost="true"
-    class="inset-0 bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] [background-size:16px_16px]"
-  >
+  <body hx-boost="true">
     {{ template "navbar" .}}
-    <div class="flex items-center my-2 h-screen">
-      <div class="w-3/5">
-        <h1
-          class="text-center sm:text-xl md:text-2xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter"
-        >
-          👋 Hi! I'm Cabe
-        </h1>
-        <p
-          class="text-center sm:text-sm md:text-sm lg:text-lg mx-4 mt-2 text-slate-600"
-        >
-          I'm a Software Engineer located in the mountains of Colorado. I love
-          to write code, eat good food, and run trails.
-        </p>
-      </div>
-      <div class="w-2/5">
+    <div class="flex items-center">
+      <div class="flex w-full">
         <img
           src="/static/headshot.webp"
           alt="Headshot of Cabe Waldrop"
-          class="w-full object-cover rounded-md shadow"
+          class="flex object-cover rounded-md shadow m-auto"
         />
       </div>
     </div>
+    <h1
+      class="text-center py-4 sm:text-xl md:text-4xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter m-auto"
+    >
+      👋 Hi! I'm Cabe
+    </h1>
+    <p
+      class="text-center sm:text-sm md:text-sm lg:text-lg py-2 text-slate-600 text-wrap m-auto"
+    >
+      I'm a Software Engineer located in the mountains of Colorado. I love to
+      write code, eat good food, and run trails.
+    </p>
     {{ template "footer" .}}
   </body>
 </html>
