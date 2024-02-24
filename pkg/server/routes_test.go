@@ -6,8 +6,6 @@ import (
 	"testing"
 )
 
-//
-
 type TestCase struct {
 	Path       string
 	StatusCode int

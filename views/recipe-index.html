@@ -1,1 +1,5 @@
-{{define "content"}} {{range .Cards}} {{ template "card" .}} {{ end }} {{ end }}
+{{define "content"}}
+<section class="min-h-screen">
+  {{range .Cards}} {{ template "card" .}} {{ end }}
+</section>
+{{ end }}

@@ -1,12 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="box-border">
   <head>
     {{template "head" .}}
   </head>
 
   <body>
-    <div class="flex flex-col justify-center h-screen relative">
-      {{template "navbar" .}} {{template "content" .}} {{template "footer" .}}
-    </div>
+    {{template "navbar" .}} {{template "content" .}} {{template "footer" .}}
   </body>
 </html>

@@ -88,7 +88,7 @@ func handleError(err error, c echo.Context) {
 	}
 
 	c.Logger().Error(err)
-	errorPage := fmt.Sprintf("%d", code)
+	errorPage := fmt.Sprintf("%d.html", code)
 
 	if err := c.Render(code, errorPage, nil); err != nil {
 		c.Logger().Error(err)

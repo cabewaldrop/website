@@ -23,6 +23,7 @@ WORKDIR /app
 COPY --from=build /app/cabewaldrop .
 COPY --from=build /app/content ./content/
 COPY --from=build /app/static ./static/
+COPY --from=build /app/views ./views/
 COPY --from=css /app/output.css ./static/output.css
 
 ENTRYPOINT ["/app/cabewaldrop"]
