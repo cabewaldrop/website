@@ -65,7 +65,7 @@ type BlogIndexParams struct {
 
 // Determine if the request is for a partial. If it is return the partial suffix
 func partial(c echo.Context) string {
-	if c.QueryParam("partial") != "" {
+	if _, isHtmx := c.Request().Header["Hx-Request"]; isHtmx {
 		return "_partial"
 	}
 	return ""
@@ -75,7 +75,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
 
 	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index.html", IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
+		suffix := partial(c)
+		template := fmt.Sprintf("index.html%s", suffix)
+		return c.Render(200, template, IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
 	})
 
 	e.File("/favicon.ico", "static/favicon.ico")
