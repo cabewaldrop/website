@@ -1,12 +1,12 @@
 package server
 
 import (
-	"embed"
 	"errors"
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/cabewaldrop/website/pkg/content"
 	"github.com/labstack/echo/v4"
@@ -18,16 +18,45 @@ const recipeDir = "content/recipes"
 const blogDir = "content/blog"
 
 type Templates struct {
-	templates *template.Template
+	templates map[string]TypedTemplate
+}
+
+type TypedTemplate struct {
+	template     *template.Template
+	rootTemplate string
 }
 
 func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
+	return t.templates[name].template.ExecuteTemplate(w, t.templates[name].rootTemplate, data)
 }
 
-func NewTemplates(fs embed.FS) *Templates {
+func NewTemplates() *Templates {
+	templates := map[string]TypedTemplate{}
+
+	fs, err := os.ReadDir("views")
+	if err != nil {
+		log.Fatal().Msgf("Unable to open the views directory! Aborting!")
+	}
+
+	for _, f := range fs {
+		if f.Name() != "base.html" {
+			name := f.Name()
+			path := fmt.Sprintf("views/%s", name)
+			partialName := fmt.Sprintf("%s_partial", name)
+
+			fullTemplate := template.Must(template.ParseFiles(path, "views/base.html", "views/footer.html", "views/navbar.html", "views/head.html", "views/card.html"))
+			partialTemplate := template.Must(template.ParseFiles(path, "views/partial.html", "views/card.html"))
+
+			log.Info().Msgf("adding %s", name)
+			templates[name] = TypedTemplate{template: fullTemplate, rootTemplate: "base.html"}
+
+			log.Info().Msgf("adding %s", partialName)
+			templates[partialName] = TypedTemplate{template: partialTemplate, rootTemplate: "partial.html"}
+		}
+	}
+
 	return &Templates{
-		templates: template.Must(template.ParseFS(fs, "views/*.html")),
+		templates: templates,
 	}
 }
 
@@ -66,13 +95,13 @@ func handleError(err error, c echo.Context) {
 	}
 }
 
-func ConfigureServer(e *echo.Echo, fs embed.FS) {
+func ConfigureServer(e *echo.Echo) {
 	err := loadContent()
 	if err != nil {
 		log.Fatal().Msgf("%s", err)
 	}
 
-	templates := NewTemplates(fs)
+	templates := NewTemplates()
 
 	e.Renderer = templates
 	e.HTTPErrorHandler = handleError

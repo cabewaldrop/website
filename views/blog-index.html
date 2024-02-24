@@ -1,2 +1,1 @@
-{{block "blog-index" .}} {{template "head" .}} {{template "navbar" .}} {{range
-.Cards}} {{ template "card" .}} {{end}} {{template "footer" .}} {{end}}
+{{define "content"}} {{range .Cards}} {{ template "card" .}} {{end}} {{ end }}

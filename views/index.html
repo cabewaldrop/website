@@ -1,38 +1,28 @@
-{{ block "index" . }}
-<!doctype html>
-<html lang="en">
-  {{ template "head" .}}
-  <body hx-boost="true">
-    <div class="flex flex-col justify-center h-screen relative">
-      {{ template "navbar" .}}
-      <div class="flex flex-col m-auto">
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 justify-items-center items-center mt-8 mx-4 sm:m-auto"
-        >
-          <div class="mx-auto col-span-1 order-2 sm:order-1">
-            <h1
-              class="text-center text-2xl pt-8 pb-4 sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter"
-            >
-              👋 Hi! I'm Cabe
-            </h1>
-            <p
-              class="text-center text-lg md:text-xl lg:text-2xl py-2 text-slate-600 text-wrap mx-auto"
-            >
-              I'm a Software Engineer located in the mountains of Colorado. I
-              love to write code, eat good food, and run trails.
-            </p>
-          </div>
-          <div class="col-span-1 order-1 sm:order-2">
-            <img
-              src="/static/headshot.webp"
-              alt="Headshot of Cabe Waldrop"
-              class="rounded-md shadow-xl mx-auto align-bottom"
-            />
-          </div>
-        </div>
-      </div>
-      {{ template "footer" .}}
+{{define "content" }}
+<div class="flex flex-col m-auto">
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 justify-items-center items-center mt-8 mx-4 sm:m-auto"
+  >
+    <div class="mx-auto col-span-1 order-2 sm:order-1">
+      <h1
+        class="text-center text-2xl pt-8 pb-4 sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter"
+      >
+        👋 Hi! I'm Cabe
+      </h1>
+      <p
+        class="text-center text-lg md:text-xl lg:text-2xl py-2 text-slate-600 text-wrap mx-auto"
+      >
+        I'm a Software Engineer located in the mountains of Colorado. I love to
+        write code, eat good food, and run trails.
+      </p>
     </div>
-  </body>
-</html>
+    <div class="col-span-1 order-1 sm:order-2">
+      <img
+        src="/static/headshot.webp"
+        alt="Headshot of Cabe Waldrop"
+        class="rounded-md shadow-xl mx-auto align-bottom"
+      />
+    </div>
+  </div>
+</div>
 {{ end }}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"embed"
 	"fmt"
 	"os"
 	"os/signal"
@@ -14,14 +13,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-//go:embed views
-var views embed.FS
 var ADDRESS = fmt.Sprintf(":%s", os.Getenv("PORT"))
 
 func main() {
 	log.Info().Msgf("Starting server with port: %s", os.Getenv("PORT"))
 	e := echo.New()
-	server.ConfigureServer(e, views)
+	server.ConfigureServer(e)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGKILL, syscall.SIGINT)
 	defer cancel()

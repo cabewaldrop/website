@@ -63,11 +63,19 @@ type BlogIndexParams struct {
 	Cards []Card
 }
 
+// Determine if the request is for a partial. If it is return the partial suffix
+func partial(c echo.Context) string {
+	if c.QueryParam("partial") != "" {
+		return "_partial"
+	}
+	return ""
+}
+
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
 
 	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index", IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
+		return c.Render(200, "index.html", IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
 	})
 
 	e.File("/favicon.ico", "static/favicon.ico")
@@ -91,7 +99,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			)
 		}
 
-		return c.Render(200, "recipe-index",
+		suffix := partial(c)
+		template := fmt.Sprintf("recipe-index.html%s", suffix)
+		return c.Render(200, template,
 			RecipeIndexParams{
 				Meta:  Metadata{Date: now, Title: "Recipes"},
 				Cards: cards,
@@ -109,7 +119,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "recipe-detail",
+		suffix := partial(c)
+		template := fmt.Sprintf("recipe-detail.html%s", suffix)
+		return c.Render(200, template,
 			RecipeDetailParams{
 				Meta: Metadata{
 					Date:  now,
@@ -139,11 +151,14 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			)
 		}
 
-		return c.Render(200, "blog-index", BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Cards: cards})
+		suffix := partial(c)
+		template := fmt.Sprintf("blog-index.html%s", suffix)
+		return c.Render(200, template, BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Cards: cards})
 	})
 
 	e.GET("/blog/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
+
 		post, err := content.GetPost(slug)
 		if err != nil {
 			return &echo.HTTPError{
@@ -152,7 +167,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		return c.Render(200, "post", PostDetailParams{
+		suffix := partial(c)
+		template := fmt.Sprintf("post.html%s", suffix)
+		return c.Render(200, template, PostDetailParams{
 			Meta: Metadata{
 				Date:  now,
 				Title: slug,

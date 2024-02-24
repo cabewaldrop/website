@@ -1,12 +1,9 @@
-{{ block "post" .}}
-<!doctype html>
-<html lang="en">
-  {{template "head" .}} {{ template "navbar" .}}
-  <script>
-    hljs.highlightAll();
-  </script>
-  <div class="mt-4">
-    <article class="prose lg:prose-xl m-auto">{{ .Post.Content }}</article>
-  </div>
-</html>
+<!-- Content -->
+{{ define "content" }}
+<script>
+  hljs.highlightAll();
+</script>
+<div class="mt-4">
+  <article class="prose lg:prose-xl m-auto">{{ .Post.Content }}</article>
+</div>
 {{ end }}

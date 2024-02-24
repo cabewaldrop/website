@@ -1,4 +1,4 @@
-{{ block "recipe-detail" .}} {{template "head" .}} {{template "navbar" .}}
+{{ define "content" }}
 <div class="mt-4 grid grid-cols-1 justify-items-center">
   <img
     class="object-cover mb-3 rounded-full shadow-lg"
@@ -38,4 +38,4 @@
     {{ end}}
   </ul>
 </div>
-{{ template "footer" .}} {{ end }}
+{{ end }}
