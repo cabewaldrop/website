@@ -1,10 +1,10 @@
 {{ block "card" .}}
 <div
-  class="border bg-gray-700 dark:bg-gray-700 rounded-lg shadow hover:bg-gray-500"
+  class="border bg-ash_gray-200 dark:bg-ash_gray-200 rounded-lg shadow hover:bg-ash_gray-200 m-4"
 >
   <a
     href="{{ .URL }}"
-    class="hover:bg-gray-700"
+    class="hover:bg-ash_gray-200"
     hx-get="{{ .URL }}"
     hx-push-url="true"
     hx-swap="outerHTML"
@@ -13,11 +13,11 @@
     <img class="rounded-t-lg" src="{{ .Image }}" alt="The tykling" />
     <div class="p-5">
       <h2
-        class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2"
+        class="mb-2 text-lg font-bold tracking-tight text-white dark:text-white line-clamp-2"
       >
         {{ .Title }}
       </h2>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-3">
+      <p class="mb-3 font-normal text-white dark:text-white line-clamp-3">
         {{ .Description }}
       </p>
     </div>

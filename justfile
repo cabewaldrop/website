@@ -5,7 +5,7 @@ deploy: test css
   flyctl deploy
 
 css:
-  npx tailwindcss -i input.css -o static/output.css --minify
+  npx tailwindcss -i input.css -o static/styles/output.css --minify
 
 test: up
   go test ./...
