@@ -1,8 +1,8 @@
 ---
 "title": "Using Helm Library Charts to Improve DevEx With Tyk Operator"
-"slug": "tyk-helm-devex"
-"image": /static/rtfm-design.webp
-"description": "Leveling up Tyk Developer Experience with Helm Charts"
+"slug": "helm-devex"
+"image": /static/images/rtfm-design.webp
+"description": "Make your API Platform Easier to Use With Helm"
 "content": |
   <h1 class="text-center">Using Helm Library Charts to Improve DevEx With Tyk Operator</h1>
   <p>

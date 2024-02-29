@@ -105,7 +105,7 @@ func ConfigureServer(e *echo.Echo) {
 
 	e.Renderer = templates
 	e.HTTPErrorHandler = handleError
-
+	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
 

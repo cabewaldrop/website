@@ -1,21 +1,23 @@
 {{ block "card" .}}
-<div class="flex justify-center my-4">
+<div
+  class="border bg-gray-700 dark:bg-gray-700 rounded-lg shadow hover:bg-gray-500"
+>
   <a
     href="{{ .URL }}"
-    class="flex flex-col w-full items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-500 dark:border-gray-700 dark:bg-gray-700"
+    class="hover:bg-gray-700"
+    hx-get="{{ .URL }}"
+    hx-push-url="true"
+    hx-swap="outerHTML"
+    hx-target="#content"
   >
-    <img
-      class="object-cover aspect-square w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-      src="{{ .Image }}"
-      alt="{{ .Description }}"
-    />
-    <div class="flex flex-col justify-between p-4 leading-normal">
-      <h5
-        class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+    <img class="rounded-t-lg" src="{{ .Image }}" alt="The tykling" />
+    <div class="p-5">
+      <h2
+        class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2"
       >
         {{ .Title }}
-      </h5>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      </h2>
+      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-3">
         {{ .Description }}
       </p>
     </div>

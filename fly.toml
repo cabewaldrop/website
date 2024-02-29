@@ -14,10 +14,7 @@ primary_region = 'ord'
 [env]
   PORT = 8080
   BASE_URL = "cabewaldrop.com"
-
-[[statics]]
-  guest_path = "/app/static"
-  url_prefix = "/static"
+  IMAGE_CACHE_POLICY = "max-age=600"
 
 [[vm]]
   cpu_kind = 'shared'

@@ -1,5 +1,9 @@
 {{define "content"}}
-<section id="content" class="min-h-[80vh]">
-  {{range .Cards}} {{ template "card" .}} {{ end }}
+<section id="content" class="min-h-[80vh] p-4">
+  <div
+    class="grid grid-cols-1 auto-rows-fr sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+  >
+    {{range .Cards}} {{ template "card" .}} {{ end }}
+  </div>
 </section>
 {{ end }}

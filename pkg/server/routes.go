@@ -63,28 +63,51 @@ type BlogIndexParams struct {
 	Cards []Card
 }
 
+const (
+	PARTIAL_SUFFIX_KEY   = "partial-suffix"
+	PARTIAL_SUFFIX_VALUE = "_partial"
+)
+
 // Determine if the request is for a partial. If it is return the partial suffix
 func partial(c echo.Context) string {
 	if _, isHtmx := c.Request().Header["Hx-Request"]; isHtmx {
-		return "_partial"
+		return PARTIAL_SUFFIX_VALUE
 	}
 	return ""
+}
+
+// setPartialPrefix determines if the request is for a full page or HTML partial to serve HTMX request
+func setPartialPrefix(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		if _, isHtmx := c.Request().Header["Hx-Request"]; isHtmx {
+			c.Set(PARTIAL_SUFFIX_KEY, PARTIAL_SUFFIX_VALUE)
+			return next(c)
+		}
+
+		c.Set(PARTIAL_SUFFIX_KEY, "")
+		return next(c)
+	}
+}
+
+// setCachePolicy adds the Cache-Control header to the response. Used to set policy on static images
+func setCachePolicy(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		c.Response().Header().Set(echo.HeaderCacheControl, "max-age=60")
+		return next(c)
+	}
 }
 
 func RegisterRoutes(e *echo.Echo) *echo.Echo {
 	now := time.Now().Format("01/02/2006")
 
-	e.GET("/", func(c echo.Context) error {
-		suffix := partial(c)
-		template := fmt.Sprintf("index.html%s", suffix)
-		return c.Render(200, template, IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
-	})
-
-	e.File("/favicon.ico", "static/favicon.ico")
-
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSON(200, HealthCheckResponse{Status: "ok"})
 	})
+
+	e.GET("/", func(c echo.Context) error {
+		template := fmt.Sprintf("index.html%s", c.Get(PARTIAL_SUFFIX_KEY))
+		return c.Render(200, template, IndexParams{Meta: Metadata{Date: now, Title: "Cabe Waldrop"}})
+	}, setPartialPrefix)
 
 	e.GET("/recipes", func(c echo.Context) error {
 		recipes := content.GetRecipes()
@@ -101,15 +124,14 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			)
 		}
 
-		suffix := partial(c)
-		template := fmt.Sprintf("recipe-index.html%s", suffix)
+		template := fmt.Sprintf("recipe-index.html%s", c.Get(PARTIAL_SUFFIX_KEY))
 		return c.Render(200, template,
 			RecipeIndexParams{
 				Meta:  Metadata{Date: now, Title: "Recipes"},
 				Cards: cards,
 			},
 		)
-	})
+	}, setPartialPrefix)
 
 	e.GET("/recipes/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
@@ -121,8 +143,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		suffix := partial(c)
-		template := fmt.Sprintf("recipe-detail.html%s", suffix)
+		template := fmt.Sprintf("recipe-detail.html%s", c.Get(PARTIAL_SUFFIX_KEY))
 		return c.Render(200, template,
 			RecipeDetailParams{
 				Meta: Metadata{
@@ -137,7 +158,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 				Recipe: recipe,
 			},
 		)
-	})
+	}, setPartialPrefix)
 
 	e.GET("/blog", func(c echo.Context) error {
 		posts := content.GetPosts()
@@ -153,10 +174,9 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			)
 		}
 
-		suffix := partial(c)
-		template := fmt.Sprintf("blog-index.html%s", suffix)
+		template := fmt.Sprintf("blog-index.html%s", c.Get(PARTIAL_SUFFIX_KEY))
 		return c.Render(200, template, BlogIndexParams{Meta: Metadata{Date: now, Title: "Blog"}, Cards: cards})
-	})
+	}, setPartialPrefix)
 
 	e.GET("/blog/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
@@ -169,8 +189,7 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 			}
 		}
 
-		suffix := partial(c)
-		template := fmt.Sprintf("post.html%s", suffix)
+		template := fmt.Sprintf("post.html%s", c.Get(PARTIAL_SUFFIX_KEY))
 		return c.Render(200, template, PostDetailParams{
 			Meta: Metadata{
 				Date:  now,
@@ -181,11 +200,15 @@ func RegisterRoutes(e *echo.Echo) *echo.Echo {
 					Image:       fmt.Sprintf("%s%s", baseURL, post.Image),
 				},
 			}, Post: post})
-	})
+	}, setPartialPrefix)
 
-	// Used in dev, but actually intercepted and served by CDN in production
-	// See [[statics]] in fly.toml
-	e.Static("/static", "static")
+	// Set cache policy on static images
+	g := e.Group("/static", setCachePolicy)
+
+	// Set up static routes
+	g.Static("/images", "static/images")
+	e.Static("/styles", "static/styles")
+	e.File("/favicon.ico", "static/favicon.ico", setCachePolicy)
 
 	return e
 }
