@@ -1,8 +1,16 @@
 {{define "content"}}
-<section id="content" class="min-h-[85vh] p-4 bg-gradient-to-r from-ash_gray">
-  <div
-    class="grid grid-cols-1 auto-rows-fr sm:grid-cols-2 md:grid-cols-3 gap-8"
-  >
+<section id="content" class="min-h-[85vh] p-4">
+  <section id="blog-index heading" class="py-12 md:py-24 lg:py-32">
+    <div
+      class="flex flex-col justify-center items-center space-y-3 md:space-y-6"
+    >
+      <h1 class="font-bold text-2xl md:text-6xl text-white">Blog Posts</h1>
+      <p class="text-lg md:text-xl text-center text-white/60">
+        Random thoughts and musings, mostly about tech
+      </p>
+    </div>
+  </section>
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-12">
     {{range .Cards}} {{ template "card" .}} {{end}}
   </div>
 </section>

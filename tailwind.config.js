@@ -63,6 +63,12 @@ module.exports = {
           800: "#f1aabb",
           900: "#f8d4dd",
         },
+        dark_blue: {
+          DEFAULT: "#121b22",
+        },
+        aqua: {
+          DEFAULT: "#4ff8d2",
+        },
       },
       typography: {
         DEFAULT: {

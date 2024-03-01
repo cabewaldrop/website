@@ -1,26 +1,32 @@
 {{ block "card" .}}
-<div
-  class="border bg-ash_gray-200 dark:bg-ash_gray-200 rounded-lg shadow hover:bg-ash_gray-200 m-4"
+<a
+  href="{{ .URL }}"
+  class="group flex flex-col space-y-3 md:space-y-6"
+  hx-get="{{ .URL }}"
+  hx-push-url="true"
+  hx-swap="outerHTML"
+  hx-target="#content"
 >
-  <a
-    href="{{ .URL }}"
-    class="hover:bg-ash_gray-200"
-    hx-get="{{ .URL }}"
-    hx-push-url="true"
-    hx-swap="outerHTML"
-    hx-target="#content"
+  <div
+    class="object-contain aspect-video shadow-lg rounded-xl overflow-hidden flex items-center justify-center"
   >
-    <img class="rounded-t-lg" src="{{ .Image }}" alt="The tykling" />
-    <div class="p-5">
-      <h2
-        class="mb-2 text-lg font-bold tracking-tight text-white dark:text-white line-clamp-2"
-      >
-        {{ .Title }}
-      </h2>
-      <p class="mb-3 font-normal text-white dark:text-white line-clamp-3">
-        {{ .Description }}
-      </p>
-    </div>
-  </a>
-</div>
+    <img
+      alt="Cover image for {{ .Title }}"
+      loading="lazy"
+      width="1080"
+      height="720"
+      decoding="async"
+      class="w-full h-full hover:bg-white hover:opacity-45"
+      src="{{ .Image }}"
+      style="color: transparent"
+    />
+  </div>
+  <div class="space-y-3">
+    <h2
+      class="text-2xl font-medium group-hover:text-turso-turquoise text-white hover:text-raspberry-400 text-center"
+    >
+      {{ .Title }}
+    </h2>
+  </div>
+</a>
 {{ end }}
